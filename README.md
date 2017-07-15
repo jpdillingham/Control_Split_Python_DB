@@ -11,9 +11,11 @@ tQ.py=Core XML parser/Mapping/etc
 
 
 Open up the tQ2.py file and alter the following variables for your path
+
+```
 heapPath="C:/Python34/sample_HEAP.xmlff"   #root in the xmlff file must match the file name w/o extesnion this is the split file
 rlPath="C:/Python34/sample_RL.xmlff"       #root in the xmlff file must match the file name w/o extension this is the control file
-
+```
 
 Read comments in code, I am presently working on building this out for more funtionality in the future. I just wanted to get the code out there to get some feedback. 
 
@@ -28,12 +30,15 @@ Data types concerns would need to be addressed by an application that writes to 
 
 For example
 Line based Data (future application would need to escape line delimiters and parser error like data in the arrays)
+```
 R|34*3||34*3|1|34*3|2015-10-31 12:33:48|34*3|(E-34*3)[[['<xml><NAME>JOE</NAME></xml>','hunter'],'00000000000']](A-34*3)[[[['',['mr']],['',['esq']],['spanish','english']],['',['france']]],[]]|34*3|(E-34*3)[['','notes about work']](A-34*3)[[['',['123 fake st','foobar','il','00000']],['',['345 fake st','foobar','il','000000']]]]
 R|34*3||34*3|2|34*3|2016-01-31 11:15:38|34*3|(E-34*3)[[['mike','hunter'],'00000000000']](A-34*3)[[[['',['mr']],['',['esq']],['spanish','english']],['',['france']]],[]]|34*3|(E-34*3)[['','notes about work']](A-34*3)[[['',['23 fake st','foobar','il','00000']],['',['345 fake st','foobar','il','000000']]]]
 R|34*3||34*3|3|34*3|2016-01-31 11:15:55|34*3|(E-34*3)[[['michelle','hunter'],'00000000000']](A-34*3)[[[['',['ms']],['',['esq']],['spanish','english']],['',['france']]],[]]|34*3|(E-34*3)[['','notes about work']](A-34*3)[[['',['13 fake st','foobar','il','00000']],['',['345 fake st','foobar','ne','000000']]]]
+```
 
 Shell:
-        <column>
+```xml
+<column>
                  <state accept="D,U,R,X"></state>
                  <inx accept="AN"></inx>
                  <id accept="N"></id>
@@ -50,12 +55,14 @@ Shell:
                          <work loc="[0][1]" ev="1" av="4" street="" city="" state="" zip=""></work>
                 </address>
         </column>
-
+```
 Query 1:
-queryCmdArr=[['ALL'],['xml',''],[['2|<first ',['LKE',''],'<xml>',0,'AssignInx']]]
+```queryCmdArr=[['ALL'],['xml',''],[['2|<first ',['LKE',''],'<xml>',0,'AssignInx']]]```
 Explained: Get all elements, return xml, where the 2nd depth <first> element like the text value <xml>
 
 Query 1 xml response:
+
+```xml
 <state accept="D,U,R,X">R</state>
 <inx accept="AN"></inx>
 <id accept="N">1</id>
@@ -71,13 +78,14 @@ Query 1 xml response:
         <home loc="[0][0]" ev="0" av="4" street="123 fake st" city="foobar" state="il" zip="00000"></home>
         <work loc="[0][1]" ev="1" av="4" street="345 fake st" city="foobar" state="il" zip="000000">notes about work</work>
 </address>
-
+```
 
 Query 2:
-queryCmdArr=[['<state ','<user '],['json',''],[['2|<first ',['E2','0'],'ms',0,'AssignInx']]]
+```queryCmdArr=[['<state ','<user '],['json',''],[['2|<first ',['E2','0'],'ms',0,'AssignInx']]]```
 Explained: Get the data soley for the <state> and <user> elements, return json, where the 2nd depth <first> element, 1st attribute is equal to 'ms'
 
 Query 2 json response:
+```json
 "state":{
         "_accept":"D,U,R,X",
         "__text":"R"
@@ -155,12 +163,15 @@ Query 2 json response:
                 "__text":""
                 }
 }
+```
 
 Query 3:
-queryCmdArr=[['ALL'],['tableALL',''],[['1|<work ',['E2','2'],'ne',0,'AssignInx']]]
+```queryCmdArr=[['ALL'],['tableALL',''],[['1|<work ',['E2','2'],'ne',0,'AssignInx']]]```
 Explained: Get all data, return in a verticalized from all element and attribute values, where depth 1 <work> element 3rd attrubute equal to ne
 
 Query3 response:
+
+```
 state->R
 inx->
 id->3
@@ -177,7 +188,7 @@ user>name>first->(A)->loc="[0][0][0]" ev="1" av="1" srnme="ms"
 user>name>last->(A)->loc="[0][0][1]" ev="1" av="1" srnme="esq"
 user>phone->(A)->loc="[0][1]" ev="1" av="1" type="france"
 address>work->(A)->loc="[0][1]" ev="1" av="4" street="345 fake st" city="foobar" state="ne" zip="000000"
-
+```
 
 
 
